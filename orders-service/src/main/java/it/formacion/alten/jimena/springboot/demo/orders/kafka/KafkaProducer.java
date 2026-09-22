@@ -16,8 +16,20 @@ public class KafkaProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void publishOrderEvent(OrderEvent order) {
-        logger.info("✅ Publishing order event: {}", order);
-        kafkaTemplate.send("orders-topic", order);
+    public void publishOrderEvent(OrderEvent event) {
+        String key = String.valueOf(event.orderId());
+        logger.info("📤 Publicando evento: key={}, event={}", key, event);
+
+        kafkaTemplate.send(KafkaTopicConfig.ORDERS_TOPIC, key, event)
+                .whenComplete((result, ex) -> {
+                    if (ex != null) {
+                        logger.error("❌ No se pudo publicar el evento del pedido {}", key, ex);
+                    } else {
+                        logger.info("✅ Evento del pedido {} guardado en partición {}, offset {}",
+                                key,
+                                result.getRecordMetadata().partition(),
+                                result.getRecordMetadata().offset());
+                    }
+                });
     }
 }

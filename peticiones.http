@@ -1,0 +1,38 @@
+### Producto 1
+POST http://localhost:8080/api/v1/products/
+Content-Type: application/json
+
+{ "name": "Laptop", "description": "Portátil gaming", "price": 1200.0 }
+
+### Producto 2
+POST http://localhost:8080/api/v1/products/
+Content-Type: application/json
+
+{ "name": "Smartphone", "description": "Último modelo", "price": 800.0 }
+
+### Producto 3
+POST http://localhost:8080/api/v1/products/
+Content-Type: application/json
+
+{ "name": "Auriculares", "description": "Cancelación de ruido", "price": 200.0 }
+
+### Pedido normal
+POST http://localhost:8081/api/v1/orders/
+Content-Type: application/json
+
+{ "items": [ { "productId": 1, "quantity": 2 }, { "productId": 3, "quantity": 1 } ] }
+
+### Pedido que agota el stock
+POST http://localhost:8081/api/v1/orders/
+Content-Type: application/json
+
+{ "items": [ { "productId": 2, "quantity": 50 } ] }
+
+### Listar pedidos
+GET http://localhost:8081/api/v1/orders/
+
+### Ver todo el inventario
+GET http://localhost:8082/api/v1/inventory/
+
+### Ver stock de un producto
+GET http://localhost:8082/api/v1/inventory/1

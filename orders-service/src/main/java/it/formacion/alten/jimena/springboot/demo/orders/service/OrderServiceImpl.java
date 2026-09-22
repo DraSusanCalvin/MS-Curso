@@ -94,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
         order = orderRepository.save(order);
 
         // Publish Order Event to Kafka (Async)
-        /*kafkaProducer.publishOrderEvent(new OrderEvent(
+        kafkaProducer.publishOrderEvent(new OrderEvent(
                 order.getId(),
                 order.getStatus().name(),
                 order.getItems().stream()
@@ -102,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
                                 item.getProductId(),
                                 Math.toIntExact(item.getQuantity())))
                         .toList()
-        ));*/
+        ));
 
         return new OrderResponse(
                 order.getId(),
