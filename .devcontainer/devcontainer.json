@@ -3,7 +3,7 @@
   "image": "mcr.microsoft.com/devcontainers/java:21",
   "features": {
     "ghcr.io/devcontainers/features/java:1": { "version": "none", "installMaven": "true" },
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": { "moby": false },
     "ghcr.io/devcontainers/features/node:1": { "version": "22" }
   },
   "forwardPorts": [8080, 8081, 8082],
