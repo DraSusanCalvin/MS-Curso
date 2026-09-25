@@ -9,4 +9,5 @@ public interface InventoryService {
 
     List<InventoryResponse> getInventario();
     InventoryResponse getStock(Long productId);
+    // int descontarStock(OrderEvent orderEvent);
 }
