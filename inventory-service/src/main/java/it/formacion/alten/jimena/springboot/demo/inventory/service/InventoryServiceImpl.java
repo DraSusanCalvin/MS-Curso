@@ -6,12 +6,13 @@ import java.util.Optional;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import it.formacion.alten.jimena.springboot.demo.inventory.api.adapters.InventoryResponse;
-import it.formacion.alten.jimena.springboot.demo.inventory.config.InventoryDataInitializer;
+
 import it.formacion.alten.jimena.springboot.demo.inventory.entities.Inventory;
 import it.formacion.alten.jimena.springboot.demo.inventory.kafka.adapters.OrderEvent;
 import it.formacion.alten.jimena.springboot.demo.inventory.kafka.adapters.OrderEventItem;
@@ -34,6 +35,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<InventoryResponse> getInventario() {
         List<InventoryResponse> lista = inventoryRepository.findAll().stream()
                 .map((itemInventario) -> toResponse(itemInventario))
@@ -43,6 +45,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public InventoryResponse getStock(Long productId) {
         Inventory itemInventory = inventoryRepository.findById(productId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encuentra el producto " + productId));
@@ -51,6 +54,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     }
 
+    @Transactional
     @Override
     public void descontarStock(OrderEvent orderEvent) {
 
@@ -60,7 +64,7 @@ public class InventoryServiceImpl implements InventoryService {
 
             if (inventory.isEmpty() || inventory.get().getStock() < item.quantity()) {
                 logger.warn("Pedido {} rechazado: no hay suficiente cantidad del producto {}",
-                        inventory.get().getProductId(), item.productId());
+                        orderEvent.orderId(), item.productId());
                 return;
             }
         }
