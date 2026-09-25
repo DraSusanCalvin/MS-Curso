@@ -3,12 +3,14 @@ package it.formacion.alten.jimena.springboot.demo.inventory.service;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import it.formacion.alten.jimena.springboot.demo.inventory.api.adapters.InventoryResponse;
 import it.formacion.alten.jimena.springboot.demo.inventory.entities.Inventory;
 import it.formacion.alten.jimena.springboot.demo.inventory.repository.InventoryRepository;
 
+@Service 
 public class InventoryServiceImpl implements InventoryService {
 
     private final InventoryRepository inventoryRepository;
